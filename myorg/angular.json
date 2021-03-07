@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "ngrx-issue-tracker",
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "projects": {
+    "ngrx-issue-tracker": {
+      "projectType": "application",
+      "root": "apps/ngrx-issue-tracker",
+      "sourceRoot": "apps/ngrx-issue-tracker/src",
+      "prefix": "myorg",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/ngrx-issue-tracker",
+            "index": "apps/ngrx-issue-tracker/src/index.html",
+            "main": "apps/ngrx-issue-tracker/src/main.ts",
+            "polyfills": "apps/ngrx-issue-tracker/src/polyfills.ts",
+            "tsConfig": "apps/ngrx-issue-tracker/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/ngrx-issue-tracker/src/favicon.ico",
+              "apps/ngrx-issue-tracker/src/assets"
+            ],
+            "styles": ["apps/ngrx-issue-tracker/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/ngrx-issue-tracker/src/environments/environment.ts",
+                  "with": "apps/ngrx-issue-tracker/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ngrx-issue-tracker:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngrx-issue-tracker:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngrx-issue-tracker:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/ngrx-issue-tracker/src/**/*.ts",
+              "apps/ngrx-issue-tracker/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ngrx-issue-tracker"],
+          "options": {
+            "jestConfig": "apps/ngrx-issue-tracker/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "ngrx-issue-tracker-e2e": {
+      "root": "apps/ngrx-issue-tracker-e2e",
+      "sourceRoot": "apps/ngrx-issue-tracker-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ngrx-issue-tracker-e2e/cypress.json",
+            "tsConfig": "apps/ngrx-issue-tracker-e2e/tsconfig.e2e.json",
+            "devServerTarget": "ngrx-issue-tracker:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngrx-issue-tracker:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/ngrx-issue-tracker-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}
