@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CounterComponent } from './components/counter/counter.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '' },
+  { path: '', component: CounterComponent },
 ];
 
 @NgModule({
